@@ -6,8 +6,11 @@ test.describe('Login', () => {
 	});
 
 	test('TC_02 @smoke', async ({ loginPage }) => {
-		await loginPage.login('Admin', 'admin123');
-		await loginPage.expectLoggedin();
+		await loginPage.login(
+			process.env.ADMIN_USERNAME,
+			process.env.ADMIN_PASSWORD,
+		);
+		await loginPage.expectLoggedIn();
 	});
 
 	test('TC_03', async ({ loginPage }) => {

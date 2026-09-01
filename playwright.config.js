@@ -9,6 +9,12 @@ import dotenv from 'dotenv';
 import path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
+const baseURL = process.env.BASE_URL;
+
+if (!baseURL) {
+	throw new Error('BASE_URL environment variable is not defined');
+}
+
 /**
  * @see https://playwright.dev/docs/test-configuration
  */

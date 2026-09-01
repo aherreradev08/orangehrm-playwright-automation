@@ -6,22 +6,23 @@ test.describe('Add Employee', () => {
 	});
 
 	test('TC_09 @smoke', async ({ employeePage }) => {
+		const employeeID = String(Date.now()).slice(-4);
 		await employeePage.addEmployeeWithCompleteDetails(
 			'aa',
 			'bb',
 			'cc',
-			'00099',
+			employeeID,
 		);
 	});
 	test('TC_10', async ({ employeePage }) => {
 		await employeePage.addEmployeeWithoutFirstName('last');
 	});
 
-	test.only('TC_11', async ({ employeePage }) => {
+	test('TC_11', async ({ employeePage }) => {
 		await employeePage.addEmployeeWithUnsupportedFile();
 	});
 
-	test.only('TC_12', async ({ employeePage }) => {
+	test('TC_12', async ({ employeePage }) => {
 		await employeePage.addEmployeeWithMaximumFileSize();
 	});
 });
