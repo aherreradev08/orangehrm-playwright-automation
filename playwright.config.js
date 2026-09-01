@@ -8,6 +8,12 @@ import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '.env') });
+console.log('DEBUG — BASE_URL:', process.env.BASE_URL);
+console.log('DEBUG — ADMIN_USERNAME:', process.env.ADMIN_USERNAME);
+console.log(
+	'DEBUG — ADMIN_PASSWORD:',
+	process.env.ADMIN_PASSWORD ? '(set)' : '(missing)',
+);
 
 const baseURL = process.env.BASE_URL;
 
