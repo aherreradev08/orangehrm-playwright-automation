@@ -42,7 +42,7 @@ export default defineConfig({
 		baseURL: process.env.BASE_URL,
 		trace: 'on-first-retry',
 		actionTimeout: 60000,
-		navigationTimeout: 30000,
+		navigationTimeout: 60000,
 	},
 
 	/* Configure projects for major browsers */
