@@ -1,4 +1,5 @@
 import { expect } from '@playwright/test';
+
 export class DashboardPage {
 	constructor(page) {
 		this.page = page;
@@ -13,7 +14,9 @@ export class DashboardPage {
 		this.timesheetsIcon = page.getByRole('button', { name: 'Timesheets' });
 		this.applyLeaveIcon = page.getByRole('button', { name: 'Apply Leave' });
 		this.myLeaveIcon = page.getByRole('button', { name: 'My Leave' });
-		this.myTimesheetIcon = page.getByRole('button', { name: 'My Timesheet' });
+		this.myTimesheetIcon = page.getByRole('button', {
+			name: 'My Timesheet',
+		});
 	}
 
 	async onDashboardVerify() {
@@ -23,37 +26,38 @@ export class DashboardPage {
 		await expect(this.quickLaunch).toBeVisible();
 	}
 
-	async onQuickLaunchClick() {
-		const quickLaunches = [
-			{
-				icon: this.assignLeaveIcon,
-				expectedUrl: /assignLeave/i,
-			},
-			{
-				icon: this.leaveListIcon,
-				expectedUrl: /viewLeaveList/i,
-			},
-			{
-				icon: this.timesheetsIcon,
-				expectedUrl: /viewEmployeeTimesheet/i,
-			},
-			{
-				icon: this.applyLeaveIcon,
-				expectedUrl: /applyLeave/i,
-			},
-			{
-				icon: this.myLeaveIcon,
-				expectedUrl: /viewMyLeaveList/i,
-			},
-			{
-				icon: this.myTimesheetIcon,
-				expectedUrl: /viewMyTimesheet/i,
-			},
-		];
-		for (const { icon, expectedUrl } of quickLaunches) {
-			await icon.click();
-			await expect(this.page).toHaveURL(expectedUrl);
-			await this.page.goBack();
-		}
+	// Generic helper: click one quick-launch icon and verify navigation.
+	async clickQuickLaunchIcon(icon, expectedUrl) {
+		await icon.click();
+		await expect(this.page).toHaveURL(expectedUrl);
+		await this.page.goBack();
+		await expect(this.dashboard).toBeVisible();
+	}
+
+	async onAssignLeaveClick() {
+		await this.clickQuickLaunchIcon(this.assignLeaveIcon, /assignLeave/i);
+	}
+
+	async onLeaveListClick() {
+		await this.clickQuickLaunchIcon(this.leaveListIcon, /viewLeaveList/i);
+	}
+
+	async onTimesheetsClick() {
+		await this.clickQuickLaunchIcon(
+			this.timesheetsIcon,
+			/viewEmployeeTimesheet/i,
+		);
+	}
+
+	async onApplyLeaveClick() {
+		await this.clickQuickLaunchIcon(this.applyLeaveIcon, /applyLeave/i);
+	}
+
+	async onMyLeaveClick() {
+		await this.clickQuickLaunchIcon(this.myLeaveIcon, /viewMyLeaveList/i);
+	}
+
+	async onMyTimesheetClick() {
+		await this.clickQuickLaunchIcon(this.myTimesheetIcon, /viewMyTimesheet/i);
 	}
 }

@@ -1,4 +1,5 @@
-import { expect } from 'playwright/test';
+import { expect } from '@playwright/test';
+
 export class EmployeePage {
 	constructor(page) {
 		this.page = page;
@@ -8,7 +9,14 @@ export class EmployeePage {
 		this.firstnameInput = page.getByPlaceholder('First Name');
 		this.middlenameInput = page.getByPlaceholder('Middle Name');
 		this.lastnameInput = page.getByPlaceholder('Last Name');
-		this.employeeIDInput = page.getByRole('textbox').nth(4);
+
+		// Locate the Employee Id field by its label instead of a positional
+		// index, so it doesn't silently break if the form layout changes.
+		this.employeeIDInput = page
+			.locator('.oxd-input-group')
+			.filter({ has: page.locator('label', { hasText: 'Employee Id' }) })
+			.locator('input');
+
 		this.saveButton = page.getByRole('button', { name: 'Save' });
 		this.errorMessage = page.getByText('Required', { exact: true });
 		this.photoInput = page.locator('button.employee-image-action');
@@ -31,6 +39,7 @@ export class EmployeePage {
 		await this.page.waitForURL(/viewPersonalDetails/i);
 		await expect(this.page).toHaveURL(/viewPersonalDetails/i);
 	}
+
 	async addEmployeeWithCompleteDetails(
 		firstname,
 		middlename,
@@ -41,7 +50,14 @@ export class EmployeePage {
 		await this.firstnameInput.fill(firstname);
 		await this.middlenameInput.fill(middlename);
 		await this.lastnameInput.fill(lastname);
+
+		// The site auto-populates this field via an async call after the
+		// page loads. Wait for that value to land before overwriting it,
+		// otherwise our fill can get raced/overwritten by the page's own JS.
+		await expect(this.employeeIDInput).not.toHaveValue('');
 		await this.employeeIDInput.fill(employeeID);
+		await expect(this.employeeIDInput).toHaveValue(employeeID);
+
 		await this.saveButton.click();
 		await this.page.waitForURL(/viewPersonalDetails/i);
 		await expect(this.page).toHaveURL(/viewPersonalDetails/i);

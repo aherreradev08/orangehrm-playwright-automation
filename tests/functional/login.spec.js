@@ -24,6 +24,6 @@ test.describe('Login', () => {
 	});
 
 	test('TC_05', async ({ loginPage }) => {
-		await loginPage.onForgetPasswordClick();
+		await loginPage.onForgotPasswordClick();
 	});
 });

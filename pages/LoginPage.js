@@ -43,9 +43,7 @@ export class LoginPage {
 
 	async onForgotPasswordClick() {
 		await this.forgotPassword.click();
-
 		await expect(this.page).toHaveURL(/requestPasswordResetCode/i);
-
 		await expect(this.resetPassword).toHaveText(/Reset Password/i);
 	}
 }
