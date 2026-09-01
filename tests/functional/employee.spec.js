@@ -5,7 +5,7 @@ test.describe('Add Employee', () => {
 		await employeePage.addEmployee('john', 'last');
 	});
 
-	test('TC_09', async ({ employeePage }) => {
+	test('TC_09 @smoke', async ({ employeePage }) => {
 		await employeePage.addEmployeeWithCompleteDetails(
 			'aa',
 			'bb',
