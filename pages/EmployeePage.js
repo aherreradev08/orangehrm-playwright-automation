@@ -18,6 +18,7 @@ export class EmployeePage {
 	async goToAddEmployee() {
 		await this.employeeLink.click();
 		await this.addEmployeeButton.click();
+		await this.page.waitForURL(/addemployee/i);
 		await expect(this.page).toHaveURL(/addemployee/i);
 	}
 
@@ -27,6 +28,7 @@ export class EmployeePage {
 		await this.lastnameInput.fill(lastname);
 		await this.employeeIDInput.clear();
 		await this.saveButton.click();
+		await this.page.waitForURL(/viewPersonalDetails/i);
 		await expect(this.page).toHaveURL(/viewPersonalDetails/i);
 	}
 	async addEmployeeWithCompleteDetails(
@@ -41,6 +43,7 @@ export class EmployeePage {
 		await this.lastnameInput.fill(lastname);
 		await this.employeeIDInput.fill(employeeID);
 		await this.saveButton.click();
+		await this.page.waitForURL(/viewPersonalDetails/i);
 		await expect(this.page).toHaveURL(/viewPersonalDetails/i);
 	}
 
