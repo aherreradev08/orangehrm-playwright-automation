@@ -21,6 +21,12 @@ export class EmployeePage {
 		this.errorMessage = page.getByText('Required', { exact: true });
 		this.photoInput = page.locator('button.employee-image-action');
 		this.photoErrorMessage = page.locator('.oxd-input-field-error-message');
+		this.searchEmployeeNameInput = page
+			.getByRole('textbox', { name: 'Type for hints...' })
+			.first();
+		this.searchEmployeeId = page.getByRole('textbox').nth(2);
+		this.searchButton = page.getByRole('button', { name: 'Search' });
+		this.searchResultError = page.locator('#oxd-toaster_1');
 	}
 
 	async goToAddEmployee() {
@@ -89,5 +95,38 @@ export class EmployeePage {
 		const fileChooser = await fileChooserPromise;
 		await fileChooser.setFiles('test-data/photo-2mb.jpg');
 		await expect(this.photoErrorMessage).toHaveText('Attachment Size Exceeded');
+	}
+
+	async searchByEmployeeName(employeeName) {
+		await this.employeeLink.click();
+
+		await this.searchEmployeeNameInput.fill(employeeName);
+		await this.searchButton.click();
+
+		const matchingRow = this.page
+			.locator('.oxd-table-body .oxd-table-card')
+			.filter({ hasText: new RegExp(employeeName, 'i') });
+
+		await expect(matchingRow.first()).toBeVisible();
+	}
+
+	async searchByEmployeeId(employeeID) {
+		await this.employeeLink.click();
+
+		await this.searchEmployeeId.fill(employeeID);
+		await this.searchButton.click();
+
+		const matchingRow = this.page
+			.locator('.oxd-table-body .oxd-table-card')
+			.filter({ hasText: new RegExp(employeeID, 'i') });
+
+		await expect(matchingRow.first()).toBeVisible();
+	}
+
+	async noSearchResult(employeeName) {
+		await this.employeeLink.click();
+		await this.searchEmployeeNameInput.fill(employeeName);
+		await this.searchButton.click();
+		await expect(this.searchResultError).toHaveText(/No Records Found/i);
 	}
 }
