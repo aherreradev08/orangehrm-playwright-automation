@@ -36,7 +36,8 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run smoke tests
-        run: npm run test:smoke
+        # run: npm run test:smoke
+        run: npm test
 
       - name: Upload Playwright report
         if: always()

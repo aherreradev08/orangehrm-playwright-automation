@@ -35,7 +35,7 @@ test.describe('Add Employee', () => {
 		await employeePage.searchByEmployeeId('123');
 	});
 
-	test.only('TC_15', async ({ employeePage }) => {
+	test('TC_15', async ({ employeePage }) => {
 		await employeePage.noSearchResult('pppppp');
 	});
 });
