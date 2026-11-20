@@ -14,7 +14,7 @@ test.describe('Login', () => {
 	});
 
 	test('TC_03', async ({ loginPage }) => {
-		await loginPage.login('admin123', 'admin3213');
+		await loginPage.login('admin123', 'admin123');
 		await loginPage.expectLoginError(/invalid credential/i);
 	});
 
